@@ -63,6 +63,26 @@ fun PreviewScreen(viewModel: PortfolioViewModel = viewModel()) {
     val textSecondary = Color(0xFF64748B)    // Slate gray for secondary text
     val borderColor = Color(0xFFE2E8F0)      // Subtle border
 
+    // Helper to create a circular cropped & scaled bitmap to avoid shader artifacts
+    fun createCircularBitmap(srcBmp: Bitmap, diameter: Int): Bitmap {
+        val size = kotlin.math.min(srcBmp.width, srcBmp.height)
+        val x = (srcBmp.width - size) / 2
+        val y = (srcBmp.height - size) / 2
+        val squared = Bitmap.createBitmap(srcBmp, x, y, size, size)
+        val scaled = Bitmap.createScaledBitmap(squared, diameter, diameter, true)
+        val output = Bitmap.createBitmap(diameter, diameter, Bitmap.Config.ARGB_8888)
+        val canvasOut = Canvas(output)
+        val paintOut = Paint().apply {
+            isAntiAlias = true
+            isFilterBitmap = true
+        }
+        val shader = BitmapShader(scaled, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
+        paintOut.shader = shader
+        val radius = diameter / 2f
+        canvasOut.drawCircle(radius, radius, radius, paintOut)
+        return output
+    }
+
     val savePortfolioImage = {
         try {
             val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
@@ -115,16 +135,10 @@ fun PreviewScreen(viewModel: PortfolioViewModel = viewModel()) {
                         val cx = width / 2f
                         val cy = yPosition + radius
 
-                        val shader = BitmapShader(srcBmp, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
-                        val paintImg = Paint().apply { isAntiAlias = true }
+                        val diameter = (radius * 2f).toInt()
+                        val circular = createCircularBitmap(srcBmp, diameter)
 
-                        // Scale bitmap to fit circle
-                        val scale = (radius * 2f) / min(srcBmp.width.toFloat(), srcBmp.height.toFloat())
-                        val matrix = Matrix().apply { setScale(scale, scale) }
-                        shader.setLocalMatrix(matrix)
-                        paintImg.shader = shader
-
-                        canvas.drawCircle(cx, cy, radius, paintImg)
+                        canvas.drawBitmap(circular, cx - radius, cy - radius, null)
                         yPosition = cy + radius + 20f
                     }
                 } catch (e: Exception) {
@@ -345,15 +359,10 @@ ${if (portfolio.skills.isNotEmpty()) "💻 Skills: ${portfolio.skills.joinToStri
                         val cx = width / 2f
                         val cy = yPos + radius
 
-                        val shader = BitmapShader(srcBmp, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
-                        val paintImg = Paint().apply { isAntiAlias = true }
+                        val diameter = (radius * 2f).toInt()
+                        val circular = createCircularBitmap(srcBmp, diameter)
 
-                        val scale = (radius * 2f) / min(srcBmp.width.toFloat(), srcBmp.height.toFloat())
-                        val matrix = Matrix().apply { setScale(scale, scale) }
-                        shader.setLocalMatrix(matrix)
-                        paintImg.shader = shader
-
-                        canvas.drawCircle(cx, cy, radius, paintImg)
+                        canvas.drawBitmap(circular, cx - radius, cy - radius, null)
                         yPos = cy + radius + 20f
                     }
                 } catch (e: Exception) {
