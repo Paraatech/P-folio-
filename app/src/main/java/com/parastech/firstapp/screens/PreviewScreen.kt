@@ -39,6 +39,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import coil.compose.AsyncImage
+import androidx.core.content.FileProvider
 import com.parastech.firstapp.viewmodel.PortfolioViewModel
 
 @Composable
@@ -331,7 +332,7 @@ ${if (portfolio.skills.isNotEmpty()) "💻 Skills: ${portfolio.skills.joinToStri
             MediaScannerConnection.scanFile(context, arrayOf(imageFile.absolutePath), null, null)
 
             // Create share intent with both text and image
-            val uri = android.net.Uri.fromFile(imageFile)
+            val uri = androidx.core.content.FileProvider.getUriForFile(context, context.packageName + ".fileprovider", imageFile)
             val shareIntent = Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT, shareText)
