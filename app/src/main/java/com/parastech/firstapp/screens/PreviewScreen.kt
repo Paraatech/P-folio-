@@ -40,6 +40,11 @@ import java.util.Date
 import java.util.Locale
 import coil.compose.AsyncImage
 import androidx.core.content.FileProvider
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.graphics.BitmapShader
+import android.graphics.Shader
+import kotlin.math.min
 import com.parastech.firstapp.viewmodel.PortfolioViewModel
 
 @Composable
@@ -96,7 +101,39 @@ fun PreviewScreen(viewModel: PortfolioViewModel = viewModel()) {
 
             // Draw title
             canvas.drawText("PROFESSIONAL PORTFOLIO", width / 2f, yPosition, paint)
-            yPosition += 80f
+            yPosition += 40f
+
+            // Draw profile image if available
+            if (portfolio.imageUri.isNotEmpty()) {
+                try {
+                    val uri = android.net.Uri.parse(portfolio.imageUri)
+                    val input = context.contentResolver.openInputStream(uri)
+                    val srcBmp = BitmapFactory.decodeStream(input)
+                    input?.close()
+                    if (srcBmp != null) {
+                        val radius = 110f
+                        val cx = width / 2f
+                        val cy = yPosition + radius
+
+                        val shader = BitmapShader(srcBmp, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
+                        val paintImg = Paint().apply { isAntiAlias = true }
+
+                        // Scale bitmap to fit circle
+                        val scale = (radius * 2f) / min(srcBmp.width.toFloat(), srcBmp.height.toFloat())
+                        val matrix = Matrix().apply { setScale(scale, scale) }
+                        shader.setLocalMatrix(matrix)
+                        paintImg.shader = shader
+
+                        canvas.drawCircle(cx, cy, radius, paintImg)
+                        yPosition = cy + radius + 20f
+                    }
+                } catch (e: Exception) {
+                    // ignore and continue
+                }
+            } else {
+                // leave space if no image
+                yPosition += 180f
+            }
 
             // Draw name
             paint.color = AndroidColor.parseColor("#1E40AF")
@@ -106,7 +143,7 @@ fun PreviewScreen(viewModel: PortfolioViewModel = viewModel()) {
             // Draw profession
             smallPaint.textAlign = Paint.Align.CENTER
             canvas.drawText(portfolio.profession.ifEmpty { "Your Profession" }, width / 2f, yPosition, smallPaint)
-            yPosition += 100f
+            yPosition += 80f
 
             // Draw sections
             textPaint.textAlign = Paint.Align.LEFT
@@ -292,13 +329,44 @@ ${if (portfolio.skills.isNotEmpty()) "💻 Skills: ${portfolio.skills.joinToStri
                 textAlign = Paint.Align.CENTER
             }
 
-            var yPos = 140f
+            var yPos = 100f
             canvas.drawText("PROFESSIONAL PORTFOLIO", width / 2f, yPos, titlePaint)
-            yPos += 100f
+            yPos += 40f
+
+            // Draw profile image if available
+            if (portfolio.imageUri.isNotEmpty()) {
+                try {
+                    val uri = android.net.Uri.parse(portfolio.imageUri)
+                    val input = context.contentResolver.openInputStream(uri)
+                    val srcBmp = BitmapFactory.decodeStream(input)
+                    input?.close()
+                    if (srcBmp != null) {
+                        val radius = 110f
+                        val cx = width / 2f
+                        val cy = yPos + radius
+
+                        val shader = BitmapShader(srcBmp, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
+                        val paintImg = Paint().apply { isAntiAlias = true }
+
+                        val scale = (radius * 2f) / min(srcBmp.width.toFloat(), srcBmp.height.toFloat())
+                        val matrix = Matrix().apply { setScale(scale, scale) }
+                        shader.setLocalMatrix(matrix)
+                        paintImg.shader = shader
+
+                        canvas.drawCircle(cx, cy, radius, paintImg)
+                        yPos = cy + radius + 20f
+                    }
+                } catch (e: Exception) {
+                    // ignore
+                }
+            } else {
+                yPos += 180f
+            }
+
             canvas.drawText(portfolio.fullName.ifEmpty { "Your Name" }, width / 2f, yPos, namePaint)
-            yPos += 80f
+            yPos += 60f
             canvas.drawText(portfolio.profession.ifEmpty { "Your Profession" }, width / 2f, yPos, titlePaint)
-            yPos += 120f
+            yPos += 80f
 
             val smallPaint = Paint().apply {
                 isAntiAlias = true
