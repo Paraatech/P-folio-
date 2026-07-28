@@ -54,7 +54,14 @@ fun ProjectsScreen() {
                         Icons.Default.Code,
                         contentDescription = null,
                         tint = Color(0xFF6C63FF)
+
                     )
+                },onViewDetails = {
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        "https://github.com/Paraatech/P-folio-".toUri()
+                    )
+                    context.startActivity(intent)
                 }
             )
         }

@@ -6,6 +6,10 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Work
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.School
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
@@ -59,6 +63,17 @@ fun BottomBar(navController: NavController){
 
                         Screen.Contact-> Icon(Icons.Default.Person,null)
 
+                        Screen.CreatePortfolio -> Icon(Icons.Default.Add, null)
+
+                        Screen.ContactInfo -> Icon(Icons.Default.Info, null)
+
+                        Screen.SkillsEducation -> Icon(Icons.Default.School, null)
+
+                        Screen.ProjectsBuilder -> Icon(Icons.Default.Settings, null)
+
+                        Screen.AchievementsBuilder -> Icon(Icons.Default.Settings, null)
+                        Screen.Preview -> Icon(Icons.Default.Settings, null)
+
                     }
 
                 },
@@ -67,10 +82,16 @@ fun BottomBar(navController: NavController){
                     Text(
                         when (it) {
                             Screen.Home -> "Home"
-                            Screen.Projects -> "Work"
+                            Screen.Projects -> "Projects"
                             Screen.Skills -> "Skills"
                             Screen.Achievements -> "Awards"
                             Screen.Contact -> "Me"
+                            Screen.CreatePortfolio -> "Create"
+                            Screen.ContactInfo -> "Info"
+                            Screen.SkillsEducation -> "Edu"
+                            Screen.ProjectsBuilder -> "Setup"
+                            Screen.AchievementsBuilder -> "Setup"
+                            Screen.Preview -> "Preview"
                         }
                     )
                 },alwaysShowLabel = false
