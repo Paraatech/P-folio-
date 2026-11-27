@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.parastech.firstapp"
+    namespace = "com.parastech.portfoliobuilder"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -12,7 +12,8 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.parastech.firstapp"
+        applicationId = "com.parastech.portfoliobuilder"
+        compileSdk = 36
         minSdk = 26
         targetSdk = 36
         versionCode = 1

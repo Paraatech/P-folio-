@@ -1,0 +1,34 @@
+package portfolioApp.model
+
+data class Portfolio(
+    var fullName: String = "",
+    var profession: String = "",
+    var about: String = "",
+    var imageUri: String = "",
+
+    var email: String = "",
+    var phone: String = "",
+    var location: String = "",
+    var linkedin: String = "",
+    var github: String = "",
+
+    var skills: MutableList<String> = mutableListOf(),
+
+    var college: String = "",
+    var collegeLocation: String = "",
+    var degree: String = "",
+    var branch: String = "",
+    var graduationYear: String = "",
+    var secondarySchool: String = "",
+    var secondaryEducation: String = "",
+    var secondaryEducationDates: String = "",
+    var secondaryEducationLocation: String = "",
+    var highSchool: String = "",
+    var highSchoolEducation: String = "",
+    var highSchoolDates: String = "",
+    var highSchoolLocation: String = "",
+
+    var projects: MutableList<Project> = mutableListOf(),
+
+    var achievements: MutableList<Achievement> = mutableListOf()
+)

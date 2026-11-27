@@ -2,4 +2,5 @@
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Allow access to external storage root so images in Pictures can be shared -->
     <external-path name="external_files" path="." />
+    <cache-path name="shared_cache" path="." />
 </paths>
