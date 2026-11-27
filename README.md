@@ -35,7 +35,7 @@ A modern Android portfolio application built using Kotlin and Jetpack Compose, d
 ## Developer
 
 **Paras Wadhwa**
-
+[![Download APK](https://img.shields.io/badge/Download-APK-brightgreen?style=for-the-badge&logo=android)](https://github.com/Paraatech/P-folio-/releases/latest)
 B.Tech Computer Science and Engineering
 
 GitHub: https://github.com/Paraatech
